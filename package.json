@@ -1,0 +1,13 @@
+{
+    "name": "account-service-parent",
+    "version": "0.0.1",
+    "description": "Account service proof of concept",
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "devDependencies": {
+        "prettier": "^2.2.1",
+        "wsrun": "^5.2.4"
+    }
+}

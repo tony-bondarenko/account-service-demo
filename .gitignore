@@ -1,0 +1,7 @@
+.idea
+.toolbox_started
+
+node_modules
+.yarn/cache
+.yarn/unplugged
+

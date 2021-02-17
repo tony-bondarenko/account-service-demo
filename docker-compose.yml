@@ -1,0 +1,59 @@
+version: '3'
+services:
+    toolbox:
+        image: node:lts
+        container_name: account-toolbox
+        working_dir: /app/account-service
+        volumes:
+            - .:/app/account-service:z
+        networks:
+            - default
+        command:
+            bash -c "rm -rf .toolbox_started && yarn && touch .toolbox_started && sleep infinity"
+
+    gateway:
+        image: nginx:latest
+        container_name: account-gateway
+        depends_on:
+            - server
+            - client
+        ports:
+            - 80:80
+        volumes:
+            - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+        networks:
+            - default
+
+    server:
+        image: node:lts
+        container_name: account-server
+        working_dir: /app/account-service/packages/account-service
+        depends_on:
+            - toolbox
+        volumes:
+            - .:/app/account-service:z
+            - ./docker/wait-for-file.sh:/bin/wait-for-file:ro
+        networks:
+            - default
+        entrypoint: ['/bin/wait-for-file', '/app/account-service/.toolbox_started']
+        command: yarn start:debug
+
+    client:
+        image: node:lts
+        container_name: account-client
+        working_dir: /app/account-service/packages/protected-app
+        depends_on:
+            - toolbox
+        stdin_open: true
+        volumes:
+            - .:/app/account-service:ro
+            - ./packages/protected-app/node_modules:/app/account-service/packages/protected-app/node_modules:z
+            - ./docker/wait-for-file.sh:/bin/wait-for-file:ro
+        networks:
+            - default
+        entrypoint: ['/bin/wait-for-file', '/app/account-service/.toolbox_started']
+        command: yarn start
+
+networks:
+    default:
+        driver: bridge
