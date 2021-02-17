@@ -8,7 +8,7 @@
 <script>
     const serviceDomain = "{{ serviceDomain }}";
     const message = {{{ messageString }}};
-    parent.postMessage(message, "*");
+    parent.postMessage(message, serviceDomain);
 </script>
 </body>
 </html>
