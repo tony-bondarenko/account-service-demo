@@ -1,0 +1,6 @@
+Account service app, prove of concept.
+
+Add following records to /etc/hosts:
+127.0.0.1   account.com app1.com
+
+Open http://app1.com.
