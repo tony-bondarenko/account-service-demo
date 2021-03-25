@@ -45,6 +45,7 @@ function App() {
             {authToken && <div>Authorized: token = {authToken}. <a href="#">Logout</a></div>}
             {!authToken && (
                 <div>
+                    Test string for review
                     <button
                         onClick={() => setIframeSrc('http://account.com/register?service=app1.com')}
                     >
